@@ -1,0 +1,35 @@
+{
+  "name": "vero-inserto",
+  "displayName": "VeroInserto",
+  "description": "From tree to prompt. Type @@ in the prompt, pick a file or folder from your project tree, and its @path lands at the cursor.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Dmitry Koshelenko",
+    "url": "https://github.com/GomelHawk"
+  },
+  "homepage": "https://github.com/GomelHawk/VeroInserto",
+  "repository": "https://github.com/GomelHawk/VeroInserto",
+  "license": "MIT",
+  "keywords": [
+    "files",
+    "tree",
+    "mention",
+    "prompt",
+    "pane"
+  ],
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "trigger": {
+      "type": "string",
+      "title": "What opens the pane",
+      "description": "Typed in the prompt, opens the tree: two to four characters, no spaces.",
+      "default": "@@"
+    },
+    "ignore": {
+      "type": "string",
+      "title": "Names the tree leaves out",
+      "description": "Folder and file names the tree never shows, separated by commas.",
+      "default": ".git, node_modules"
+    }
+  }
+}
