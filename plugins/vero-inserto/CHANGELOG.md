@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 - 2026-10-20
+
+### Fixed
+
+- **The tree is indented in the desktop app too.** Folders and files sat flush left there;
+  the terminal was fine.
+- **The icon's frame matches the other Vero logos**, slate grey instead of white.
+
 ## 1.0.0 - 2026-10-20
 
 From tree to prompt.

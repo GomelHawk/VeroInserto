@@ -460,15 +460,17 @@ export const register: Register = (on, config) => {
         {t.isLoading && <Text dimColor>Reading the tree...</Text>}
         {rows.length === 0 && !t.isLoading && <Text dimColor>{filter === '' ? 'Nothing here.' : 'Nothing matches.'}</Text>}
         {rows.map(row => (
-          <Button
-            key={`${row.kind}:${row.path}`}
-            plain
-            dimColor={row.kind === 'paste'}
-            autoFocus={row.kind === 'dir' && row.path === focused ? true : undefined}
-            onPress={press(row)}
-          >
-            {`${'  '.repeat(row.depth)}${row.label}`}
-          </Button>
+          <Box key={`indent:${row.kind}:${row.path}`} paddingLeft={row.indent}>
+            <Button
+              key={`${row.kind}:${row.path}`}
+              plain
+              dimColor={row.kind === 'paste'}
+              autoFocus={row.kind === 'dir' && row.path === focused ? true : undefined}
+              onPress={press(row)}
+            >
+              {row.label}
+            </Button>
+          </Box>
         ))}
         {hidden > 0 && <Text dimColor>{`... ${hidden} more rows: type a filter`}</Text>}
         {t.isCapped && <Text dimColor>{`Only the first ${MAX_ENTRIES} entries were read; the filter searches those.`}</Text>}

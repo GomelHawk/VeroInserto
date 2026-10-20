@@ -8,11 +8,13 @@ import type { Entry, Folders } from '../types'
 export type Listed = { name: string; kind: 'file' | 'dir' | 'other' }
 
 // One row of the pane: a folder to open or close, a folder to paste, or a file to paste.
-// `label` is the row's text without its indentation; `path` is relative to the project.
+// `label` is the row's text; `indent` the cells before it, as layout, never as spaces in
+// the text (a desktop's proportional font collapses those); `path` is relative to the
+// project.
 export type Row =
-  | { kind: 'dir'; path: string; label: string; depth: number; isExpanded: boolean }
-  | { kind: 'paste'; path: string; label: string; depth: number }
-  | { kind: 'file'; path: string; label: string; depth: number }
+  | { kind: 'dir'; path: string; label: string; depth: number; indent: number; isExpanded: boolean }
+  | { kind: 'paste'; path: string; label: string; depth: number; indent: number }
+  | { kind: 'file'; path: string; label: string; depth: number; indent: number }
 
 // The `ignore` option's default: names the tree never shows.
 export const DEFAULT_IGNORE = '.git, node_modules'
@@ -78,13 +80,14 @@ export function treeRows(folders: Folders, expanded: readonly string[], max: num
     for (const entry of folders[dir] ?? []) {
       const path = join(dir, entry.name)
       if (entry.kind === 'file') {
-        push({ kind: 'file', path, label: `  ${entry.name}`, depth })
+        // two cells in, level with a folder's name after its marker
+        push({ kind: 'file', path, label: entry.name, depth, indent: depth * 2 + 2 })
         continue
       }
       const isExpanded = open.has(path)
-      push({ kind: 'dir', path, label: `${isExpanded ? '▾' : '▸'} ${entry.name}/`, depth, isExpanded })
+      push({ kind: 'dir', path, label: `${isExpanded ? '▾' : '▸'} ${entry.name}/`, depth, indent: depth * 2, isExpanded })
       if (isExpanded) {
-        push({ kind: 'paste', path, label: `@ ${entry.name}/`, depth: depth + 1 })
+        push({ kind: 'paste', path, label: `@ ${entry.name}/`, depth: depth + 1, indent: depth * 2 + 2 })
         walk(path, depth + 1)
       }
     }
@@ -105,7 +108,7 @@ export function filterRows(folders: Folders, filter: string, max: number): { row
       const label = entry.kind === 'dir' ? `${path}/` : path
       const lower = label.toLowerCase()
       if (!words.every(word => lower.includes(word))) continue
-      all.push(entry.kind === 'dir' ? { kind: 'paste', path, label, depth: 0 } : { kind: 'file', path, label, depth: 0 })
+      all.push(entry.kind === 'dir' ? { kind: 'paste', path, label, depth: 0, indent: 0 } : { kind: 'file', path, label, depth: 0, indent: 0 })
     }
   }
   all.sort((a, b) => byName(a.path, b.path))

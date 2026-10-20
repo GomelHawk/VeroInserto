@@ -99,7 +99,10 @@ open is the person's own and is placed at any width. The `ui.render` hook on
 `autoFocus`, `onInput` → `setFilter()`, `onSubmit` → the first row's press) where the
 surface has one (mobile has none, so it is taken from the resolved table only if there);
 a dim line while `!e.props.isFocused` saying how to move the keys; the rows as `plain`
-Buttons keyed `dir:<path>`, `paste:<path>`, `file:<path>`; `… n more` past `MAX_ROWS`; the
+Buttons keyed `dir:<path>`, `paste:<path>`, `file:<path>`, each in a Box keyed
+`indent:<kind>:<path>` whose `paddingLeft` is the row's `indent` (two cells a level, files
+two more, level with a folder's name after its marker: layout, because a desktop draws
+labels in a proportional font and collapses leading spaces); `… n more` past `MAX_ROWS`; the
 key line; and on the terminal a `Close` button (the desktop has its own close mark). A
 stopped copy draws an empty Box.
 
@@ -225,6 +228,9 @@ copy consults it, so no installed copy can opt out.
 - **The kit raises no `ui.close`** (`$.ui.close` is not on a test's `$`), so the person's
   Esc and close mark are a live check; the terminal's Close button, which calls
   `restoreDraft()` itself, is what the test presses.
+- **Leading spaces in a label vanish on the desktop.** Its proportional font collapses
+  them, so the tree was flat there while the terminal showed it indented. Indentation is
+  `paddingLeft` on a Box around the row, never spaces in the text.
 - **Mobile has no `Input`.** The table `$.ui.resolve(e)` answers has no such element
   there; the pane reads it off the table (`'Input' in table`) rather than destructuring.
 - **Two panes are tabs.** Open panes share one frame; opening ours beside VeroDiff's adds a

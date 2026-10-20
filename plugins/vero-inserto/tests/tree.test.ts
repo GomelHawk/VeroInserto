@@ -132,9 +132,9 @@ describe('treeRows', () => {
   test('the root closed: its rows alone, folders marked', () => {
     expect(treeRows(FOLDERS, [], 400)).toEqual({
       rows: [
-        { kind: 'dir', path: 'src', label: '▸ src/', depth: 0, isExpanded: false },
-        { kind: 'file', path: 'Alpha.md', label: '  Alpha.md', depth: 0 },
-        { kind: 'file', path: 'README.md', label: '  README.md', depth: 0 },
+        { kind: 'dir', path: 'src', label: '▸ src/', depth: 0, indent: 0, isExpanded: false },
+        { kind: 'file', path: 'Alpha.md', label: 'Alpha.md', depth: 0, indent: 2 },
+        { kind: 'file', path: 'README.md', label: 'README.md', depth: 0, indent: 2 },
       ],
       hidden: 0,
     })
@@ -142,14 +142,14 @@ describe('treeRows', () => {
 
   test('an open folder: the paste row first, then its entries, one level in', () => {
     expect(treeRows(FOLDERS, ['src', 'src/lib'], 400).rows).toEqual([
-      { kind: 'dir', path: 'src', label: '▾ src/', depth: 0, isExpanded: true },
-      { kind: 'paste', path: 'src', label: '@ src/', depth: 1 },
-      { kind: 'dir', path: 'src/lib', label: '▾ lib/', depth: 1, isExpanded: true },
-      { kind: 'paste', path: 'src/lib', label: '@ lib/', depth: 2 },
-      { kind: 'file', path: 'src/lib/util.ts', label: '  util.ts', depth: 2 },
-      { kind: 'file', path: 'src/app.ts', label: '  app.ts', depth: 1 },
-      { kind: 'file', path: 'Alpha.md', label: '  Alpha.md', depth: 0 },
-      { kind: 'file', path: 'README.md', label: '  README.md', depth: 0 },
+      { kind: 'dir', path: 'src', label: '▾ src/', depth: 0, indent: 0, isExpanded: true },
+      { kind: 'paste', path: 'src', label: '@ src/', depth: 1, indent: 2 },
+      { kind: 'dir', path: 'src/lib', label: '▾ lib/', depth: 1, indent: 2, isExpanded: true },
+      { kind: 'paste', path: 'src/lib', label: '@ lib/', depth: 2, indent: 4 },
+      { kind: 'file', path: 'src/lib/util.ts', label: 'util.ts', depth: 2, indent: 6 },
+      { kind: 'file', path: 'src/app.ts', label: 'app.ts', depth: 1, indent: 4 },
+      { kind: 'file', path: 'Alpha.md', label: 'Alpha.md', depth: 0, indent: 2 },
+      { kind: 'file', path: 'README.md', label: 'README.md', depth: 0, indent: 2 },
     ])
   })
 
@@ -160,8 +160,8 @@ describe('treeRows', () => {
   test('the cap: the first rows, the rest counted', () => {
     expect(treeRows(FOLDERS, ['src'], 2)).toEqual({
       rows: [
-        { kind: 'dir', path: 'src', label: '▾ src/', depth: 0, isExpanded: true },
-        { kind: 'paste', path: 'src', label: '@ src/', depth: 1 },
+        { kind: 'dir', path: 'src', label: '▾ src/', depth: 0, indent: 0, isExpanded: true },
+        { kind: 'paste', path: 'src', label: '@ src/', depth: 1, indent: 2 },
       ],
       hidden: 4,
     })
@@ -172,8 +172,8 @@ describe('filterRows', () => {
   test('every path holding the words, flat, A to Z, folders with a slash, each a paste', () => {
     expect(filterRows(FOLDERS, 'lib', 400)).toEqual({
       rows: [
-        { kind: 'paste', path: 'src/lib', label: 'src/lib/', depth: 0 },
-        { kind: 'file', path: 'src/lib/util.ts', label: 'src/lib/util.ts', depth: 0 },
+        { kind: 'paste', path: 'src/lib', label: 'src/lib/', depth: 0, indent: 0 },
+        { kind: 'file', path: 'src/lib/util.ts', label: 'src/lib/util.ts', depth: 0, indent: 0 },
       ],
       hidden: 0,
     })
@@ -183,7 +183,7 @@ describe('filterRows', () => {
   })
 
   test('the cap', () => {
-    expect(filterRows(FOLDERS, 's', 1)).toEqual({ rows: [{ kind: 'paste', path: 'src', label: 'src/', depth: 0 }], hidden: 3 })
+    expect(filterRows(FOLDERS, 's', 1)).toEqual({ rows: [{ kind: 'paste', path: 'src', label: 'src/', depth: 0, indent: 0 }], hidden: 3 })
   })
 })
 

@@ -2,7 +2,7 @@
   "name": "vero-inserto",
   "displayName": "VeroInserto",
   "description": "From tree to prompt. Type @@ in the prompt, pick a file or folder from your project tree, and its @path lands at the cursor.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Dmitry Koshelenko",
     "url": "https://github.com/GomelHawk"
